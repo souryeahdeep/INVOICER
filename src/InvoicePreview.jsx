@@ -9,54 +9,19 @@ const printStyles = `
       margin: 0;
       padding: 0;
       background: white !important;
-      zoom: 0.92;
+      height: 100%;
+      width: 100%;
     }
     .print-wrapper {
-      min-height: auto !important;
+      min-height: 100vh !important;
+      height: 100%;
       margin: 0;
-      padding: 0;
+      padding: 1rem;
       page-break-after: avoid;
       page-break-inside: avoid;
-    }
-    .print-wrapper .max-w-4xl {
-      max-width: none;
-    }
-    .print-wrapper .relative {
-      box-shadow: none;
-      border-radius: 0;
-    }
-    .print-wrapper .space-y-8 > * + * {
-      margin-top: 0.7rem;
-    }
-    .print-wrapper table,
-    .print-wrapper table th,
-    .print-wrapper table td {
-      font-size: 0.75rem;
-      border-color: #d1d5db;
-      page-break-inside: avoid;
-      padding: 0.4rem;
-    }
-    .print-wrapper .w-60 {
-      width: 11rem;
-    }
-    .print-wrapper .text-5xl {
-      font-size: 2.2rem;
-    }
-    .print-wrapper .text-2xl {
-      font-size: 1.1rem;
-    }
-    .print-wrapper .text-lg {
-      font-size: 0.92rem;
-    }
-    .print-wrapper .text-base {
-      font-size: 0.85rem;
-    }
-    .print-wrapper .text-sm {
-      font-size: 0.75rem;
-    }
-    .print-wrapper .flex,
-    .print-wrapper .flex > * {
-      page-break-inside: avoid;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
   }
 `;
