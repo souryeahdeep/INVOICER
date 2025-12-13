@@ -1,3 +1,25 @@
+const printStyles = `
+  @media print {
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: white !important;
+    }
+    .print-wrapper {
+      min-height: auto !important;
+      margin: 0;
+      padding: 0;
+    }
+    .print-wrapper table {
+      page-break-inside: avoid;
+    }
+    .print-wrapper .flex {
+      page-break-inside: avoid;
+    }
+  }
+`;
+
 const InvoicePreview = ({ data, onEdit }) => {
   const { formData, products, totals } = data;
 
@@ -6,7 +28,9 @@ const InvoicePreview = ({ data, onEdit }) => {
   const formatCurrency = (value) => `₹${Number(value || 0).toFixed(2)}`;
 
   return (
-    <div className="min-h-screen bg-[#f3f4f6] py-10 px-4 print:bg-white">
+    <>
+      <style>{printStyles}</style>
+      <div className="print-wrapper min-h-screen bg-[#f3f4f6] py-10 px-4 print:bg-white print:py-0 print:px-0 print:min-h-auto">
       <div className="max-w-4xl mx-auto mb-6 flex flex-wrap gap-3 justify-between print:hidden">
         <button
           type="button"
@@ -25,7 +49,7 @@ const InvoicePreview = ({ data, onEdit }) => {
         </button>
       </div>
 
-      <div className="relative max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden print:shadow-none print:rounded-none">
+      <div className="relative max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden print:shadow-none print:rounded-none print:max-w-full">
         <div
           className="absolute -bottom-20 -right-16 w-72 h-72 bg-linear-to-br from-gray-200 via-gray-100 to-white rounded-full opacity-70 pointer-events-none"
           aria-hidden
@@ -35,7 +59,7 @@ const InvoicePreview = ({ data, onEdit }) => {
           aria-hidden
         />
 
-        <div className="relative z-10 px-10 pb-10 pt-12 space-y-8 text-gray-900">
+        <div className="relative z-10 px-10 pb-10 pt-12 space-y-8 text-gray-900 print:px-6 print:pb-6 print:pt-8 print:space-y-6">
           {/* Header */}
           <div className="flex justify-between items-start text-sm font-semibold tracking-wide text-gray-500">
             <div>
@@ -51,10 +75,10 @@ const InvoicePreview = ({ data, onEdit }) => {
 
           <div>
             <p className="text-5xl font-black tracking-tight text-gray-900">
-              {formData.industryName || "Ganguly Industries"}
+              {formData.industryName || "GANGULY INDUSTRIES"}
             </p>
             <p className="mt-1 text-2xl text-black">
-              {formData.companyAddress || "Company Address"}
+              {formData.companyAddress || "24 GT ROAD, ANGUS , HOOGHLY - 712221"}
             </p>
             <p className="text-2xl text-black">
               UAN: {formData.uanNumber || "UAN Number"}
@@ -72,7 +96,7 @@ const InvoicePreview = ({ data, onEdit }) => {
             <div style={{ flex: 1 }}>
               <p className="font-semibold text-gray-900">Billed to:</p>
               <p className="mt-1 text-gray-800">
-                {formData.buyerName || "Buyer Name"}
+                {formData.buyerName || "M/S INTERNATIONAL COMBUSTION (INDIA) LTD."}
               </p>
               <p className="text-gray-500 text-sm">
                 {formData.buyerAddress || "Buyer address line"}
@@ -84,13 +108,13 @@ const InvoicePreview = ({ data, onEdit }) => {
             <div style={{ flex: 1 }}>
               <p className="font-semibold text-gray-900">From:</p>
               <p className="mt-1 text-gray-800">
-                {formData.industryName || "Company Name"}
+                {formData.industryName || "Ganguly Industries"}
               </p>
               <p className="text-gray-500 text-sm">
-                {formData.address || "Company address line"}
+                {formData.address || "24 GT ROAD, ANGUS , HOOGHLY - 712221"}
               </p>
               <p className="text-gray-500 text-sm">
-                {formData.mobileNumber || "Phone number"}
+                {formData.mobileNumber || "9830520044"}
               </p>
             </div>
           </div>
@@ -181,12 +205,13 @@ const InvoicePreview = ({ data, onEdit }) => {
                   {formData.rupeesText}
                 </span>
               </p>
-              <p>
-                <span className="font-semibold text-gray-800">Note:</span>
-                <span className="ml-2 text-gray-700">
-                  {formData.note || "Thank you for choosing us!"}
-                </span>
-              </p>
+             
+              {formData.orderNo && (
+                <p>
+                  <span className="font-semibold text-gray-800">Order No:</span>
+                  <span className="ml-2 text-gray-700">{formData.orderNo}</span>
+                </p>
+              )}
             </div>
             <div className="text-right">
               <p className="font-semibold text-gray-900">
@@ -197,6 +222,7 @@ const InvoicePreview = ({ data, onEdit }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

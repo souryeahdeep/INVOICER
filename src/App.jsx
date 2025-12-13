@@ -10,6 +10,7 @@ function App() {
     mobileNumber: '',
     billNo: '',
     buyerName: '',
+    buyerAddress: '',
     hsnSac: '',
 
     buyerGstin: '',
@@ -170,7 +171,6 @@ function App() {
                     onChange={handleFormChange}
                     placeholder="Enter industry name"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                    required
                   />
                 </div>
                 <div>
@@ -184,7 +184,6 @@ function App() {
                     onChange={handleFormChange}
                     placeholder="Enter company address"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                    required
                   />
                 </div>
                 <div>
@@ -211,7 +210,6 @@ function App() {
                     onChange={handleFormChange}
                     placeholder="Enter GSTIN number"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                    required
                   />
                 </div>
                 <div>
@@ -225,7 +223,6 @@ function App() {
                     onChange={handleFormChange}
                     placeholder="Enter mobile number"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                    required
                   />
                 </div>
                 <div>
@@ -239,7 +236,6 @@ function App() {
                     onChange={handleFormChange}
                     placeholder="Enter bill number"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                    required
                   />
                 </div>
               </div>
@@ -276,6 +272,19 @@ function App() {
                     onChange={handleFormChange}
                     placeholder="Enter buyer's GSTIN"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Buyer's Address
+                  </label>
+                  <textarea
+                    name="buyerAddress"
+                    value={formData.buyerAddress}
+                    onChange={handleFormChange}
+                    placeholder="Enter buyer's address"
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-y"
                   />
                 </div>
               </div>
