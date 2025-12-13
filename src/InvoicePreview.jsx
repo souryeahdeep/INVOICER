@@ -77,18 +77,26 @@ const InvoicePreview = ({ data, onEdit }) => {
             <p className="text-5xl font-black tracking-tight text-gray-900">
               {formData.industryName || "GANGULY INDUSTRIES"}
             </p>
-            <p className="mt-1 text-2xl text-black">
+            <p className="mt-1 text-xl text-black">
               {formData.companyAddress || "24 GT ROAD, ANGUS , HOOGHLY - 712221"}
             </p>
-            <p className="text-2xl text-black">
+            <p className="text-xl text-black">
+              GSTIN: {formData.gstinNumber || "19APGJPG6443J2Z2"}
+            </p>
+            <p className="text-xl text-black">
               UAN: {formData.uanNumber || "UAN Number"}
             </p>
+             <p className="text-xl text-gray-900">
+                Mobile No : {formData.mobileNumber || "9830520044"}
+              </p>
             <p className="mt-2 text-sm text-gray-500">
               <span className="font-semibold text-gray-700">Date:</span>
               <span className="ml-2 text-gray-900">
                 {formData.invoiceDate || new Date().toLocaleDateString()}
               </span>
             </p>
+                
+             
           </div>
 
           {/* Parties */}
@@ -104,19 +112,9 @@ const InvoicePreview = ({ data, onEdit }) => {
               <p className="text-gray-500 text-sm">
                 {formData.buyerEmail || "buyer@email.com"}
               </p>
+              
             </div>
-            <div style={{ flex: 1 }}>
-              <p className="font-semibold text-gray-900">From:</p>
-              <p className="mt-1 text-gray-800">
-                {formData.industryName || "Ganguly Industries"}
-              </p>
-              <p className="text-gray-500 text-sm">
-                {formData.address || "24 GT ROAD, ANGUS , HOOGHLY - 712221"}
-              </p>
-              <p className="text-gray-500 text-sm">
-                {formData.mobileNumber || "9830520044"}
-              </p>
-            </div>
+           
           </div>
 
           {/* Table */}
@@ -205,7 +203,7 @@ const InvoicePreview = ({ data, onEdit }) => {
                   {formData.rupeesText}
                 </span>
               </p>
-             
+              
               {formData.orderNo && (
                 <p>
                   <span className="font-semibold text-gray-800">Order No:</span>
