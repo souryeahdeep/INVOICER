@@ -77,16 +77,16 @@ const InvoicePreview = ({ data, onEdit }) => {
             <p className="text-5xl font-black tracking-tight text-gray-900">
               {formData.industryName || "GANGULY INDUSTRIES"}
             </p>
-            <p className="mt-1 text-xl text-black">
+            <p className="mt-1 text-lg text-black">
               {formData.companyAddress || "24 GT ROAD, ANGUS , HOOGHLY - 712221"}
             </p>
-            <p className="text-xl text-black">
+            <p className="text-lg text-black">
               GSTIN: {formData.gstinNumber || "19APGJPG6443J2Z2"}
             </p>
-            <p className="text-xl text-black">
+            <p className="text-lg text-black">
               UAN: {formData.uanNumber || "UAN Number"}
             </p>
-             <p className="text-xl text-gray-900">
+             <p className="text-lg text-gray-900">
                 Mobile No : {formData.mobileNumber || "9830520044"}
               </p>
             <p className="mt-2 text-sm text-gray-500">
