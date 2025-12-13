@@ -1,20 +1,61 @@
 const printStyles = `
   @media print {
+    @page {
+      size: A4 portrait;
+      margin: 8mm;
+    }
     html,
     body {
       margin: 0;
       padding: 0;
       background: white !important;
+      zoom: 0.92;
     }
     .print-wrapper {
       min-height: auto !important;
       margin: 0;
       padding: 0;
-    }
-    .print-wrapper table {
+      page-break-after: avoid;
       page-break-inside: avoid;
     }
-    .print-wrapper .flex {
+    .print-wrapper .max-w-4xl {
+      max-width: none;
+    }
+    .print-wrapper .relative {
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .print-wrapper .space-y-8 > * + * {
+      margin-top: 0.7rem;
+    }
+    .print-wrapper table,
+    .print-wrapper table th,
+    .print-wrapper table td {
+      font-size: 0.75rem;
+      border-color: #d1d5db;
+      page-break-inside: avoid;
+      padding: 0.4rem;
+    }
+    .print-wrapper .w-60 {
+      width: 11rem;
+    }
+    .print-wrapper .text-5xl {
+      font-size: 2.2rem;
+    }
+    .print-wrapper .text-2xl {
+      font-size: 1.1rem;
+    }
+    .print-wrapper .text-lg {
+      font-size: 0.92rem;
+    }
+    .print-wrapper .text-base {
+      font-size: 0.85rem;
+    }
+    .print-wrapper .text-sm {
+      font-size: 0.75rem;
+    }
+    .print-wrapper .flex,
+    .print-wrapper .flex > * {
       page-break-inside: avoid;
     }
   }
