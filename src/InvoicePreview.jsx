@@ -116,7 +116,7 @@ const InvoicePreview = ({ data, onEdit }) => {
                 {formData.buyerAddress || "Buyer address line"}
               </p>
               <p className="text-gray-500 text-sm">
-                {formData.buyerEmail || "buyer@email.com"}
+                GSTIN: {formData.buyerGstin || "Buyer GSTIN"}
               </p>
               
             </div>
