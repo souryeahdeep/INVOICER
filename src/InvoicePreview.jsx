@@ -1,4 +1,33 @@
 const printStyles = `
+  .invoice-outline {
+    border: 3px solid #0f172a;
+    border-radius: 1rem;
+  }
+
+  .invoice-table {
+    width: 100%;
+    border: 2px solid #0f172a;
+    border-collapse: collapse;
+  }
+
+  .invoice-table th,
+  .invoice-table td {
+    border: 1.5px solid #0f172a;
+  }
+
+  .invoice-table th {
+    background: #e2e8f0;
+  }
+
+  .invoice-table tfoot td {
+    background: #f8fafc;
+  }
+
+  .invoice-table tfoot tr:last-child td {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
   @media print {
     @page {
       size: A4 portrait;
@@ -23,6 +52,18 @@ const printStyles = `
       flex-direction: column;
       justify-content: space-between;
     }
+    .invoice-outline {
+      border-color: #0b1324;
+      border-radius: 0;
+    }
+    .invoice-table,
+    .invoice-table th,
+    .invoice-table td {
+      border-color: #0b1324;
+    }
+    .invoice-table tfoot td {
+      background: transparent;
+    }
   }
 `;
 
@@ -32,6 +73,13 @@ const InvoicePreview = ({ data, onEdit }) => {
   const handlePrint = () => window.print();
 
   const formatCurrency = (value) => `₹${Number(value || 0).toFixed(2)}`;
+  const summaryRows = [
+    { label: "Total", value: totals.subtotal },
+    { label: `CGST @ ${formData.cgstRate || 0}%`, value: totals.cgst },
+    { label: `SGST @ ${formData.sgstRate || 0}%`, value: totals.sgst },
+    { label: "Round Off", value: totals.roundOff },
+    { label: "Grand Total", value: totals.grandTotal, highlight: true },
+  ];
 
   return (
     <>
@@ -55,7 +103,7 @@ const InvoicePreview = ({ data, onEdit }) => {
         </button>
       </div>
 
-      <div className="relative max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden print:shadow-none print:rounded-none print:max-w-full">
+      <div className="relative max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden print:shadow-none print:rounded-none print:max-w-full invoice-outline">
         <div
           className="absolute -bottom-20 -right-16 w-72 h-72 bg-linear-to-br from-gray-200 via-gray-100 to-white rounded-full opacity-70 pointer-events-none"
           aria-hidden
@@ -65,7 +113,7 @@ const InvoicePreview = ({ data, onEdit }) => {
           aria-hidden
         />
 
-        <div className="relative z-10 px-10 pb-10 pt-12 space-y-8 text-gray-900 print:px-6 print:pb-6 print:pt-8 print:space-y-6">
+        <div className="relative z-10 px-0  pb-10 pt-12 space-y-8 text-gray-900 print:px-6 print:pb-6 print:pt-8 print:space-y-6">
           {/* Header */}
           <div className="flex justify-between items-start text-sm font-semibold tracking-wide text-gray-500">
             <div>
@@ -106,7 +154,10 @@ const InvoicePreview = ({ data, onEdit }) => {
           </div>
 
           {/* Parties */}
-          <div style={{ display: "flex", gap: "2rem" }} className="text-sm">
+          <div
+            style={{ display: "flex", gap: "2rem" }}
+            className="text-sm border-y border-gray-900 pt-4 pb-4 px-5 -mx-5 print:px-6 print:-mx-6"
+          >
             <div style={{ flex: 1 }}>
               <p className="font-semibold text-gray-900">Billed to:</p>
               <p className="mt-1 text-gray-800">
@@ -118,14 +169,12 @@ const InvoicePreview = ({ data, onEdit }) => {
               <p className="text-gray-500 text-sm">
                 GSTIN: {formData.buyerGstin || "Buyer GSTIN"}
               </p>
-              
             </div>
-           
           </div>
 
           {/* Table */}
           <div className="w-full">
-            <table className="w-full border-collapse text-sm rounded-lg overflow-hidden">
+            <table className="invoice-table text-sm">
               <thead>
                 <tr className="bg-gray-100 text-gray-600 uppercase text-xs tracking-wide">
                   <th className="text-left px-4 py-3">
@@ -139,7 +188,7 @@ const InvoicePreview = ({ data, onEdit }) => {
               </thead>
               <tbody className="text-gray-800">
                 {products.map((product) => (
-                  <tr key={product.id} className="border-b border-gray-100">
+                  <tr key={product.id}>
                     <td className="px-4 py-3">
                       {product.name || "Item description"}
                     </td>
@@ -158,39 +207,26 @@ const InvoicePreview = ({ data, onEdit }) => {
                   </tr>
                 ))}
               </tbody>
+              <tfoot>
+                {summaryRows.map((row) => (
+                  <tr key={row.label}>
+                    <td className="px-4 py-2" colSpan={3}></td>
+                    <td className={`px-4 py-2 text-right font-semibold ${
+                      row.highlight ? "text-base" : "text-sm"
+                    }`}
+                    >
+                      {row.label}
+                    </td>
+                    <td className={`px-4 py-2 text-right font-semibold ${
+                      row.highlight ? "text-base" : "text-sm"
+                    }`}
+                    >
+                      {formatCurrency(row.value)}
+                    </td>
+                  </tr>
+                ))}
+              </tfoot>
             </table>
-            <div className="flex justify-end border-t border-gray-200 pt-4 mt-4">
-              <div className="w-60 space-y-2 text-sm text-gray-600">
-                <div className="flex justify-between">
-                  <span>Total</span>
-                  <span className="font-semibold text-gray-900">
-                    {formatCurrency(totals.subtotal)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span>CGST @ {formData.cgstRate || 0}%</span>
-                  <span className="font-semibold text-gray-900">
-                    {formatCurrency(totals.cgst)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span>SGST @ {formData.sgstRate || 0}%</span>
-                  <span className="font-semibold text-gray-900">
-                    {formatCurrency(totals.sgst)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Round Off</span>
-                  <span className="font-semibold text-gray-900">
-                    {formatCurrency(totals.roundOff)}
-                  </span>
-                </div>
-                <div className="flex justify-between border-t border-gray-200 pt-2 text-base font-bold text-gray-900">
-                  <span>Grand Total</span>
-                  <span>{formatCurrency(totals.grandTotal)}</span>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Footer info */}
