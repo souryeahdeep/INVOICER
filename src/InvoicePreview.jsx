@@ -1,18 +1,18 @@
 const printStyles = `
   .invoice-outline {
-    border: 3px solid #0f172a;
+    border: 3px solid #003153;
     border-radius: 1rem;
   }
 
   .invoice-table {
     width: 100%;
-    border: 2px solid #0f172a;
+    border: 2px solid #003153;
     border-collapse: collapse;
   }
 
   .invoice-table th,
   .invoice-table td {
-    border: 1.5px solid #0f172a;
+    border: 1.5px solid #003153;
   }
 
   .invoice-table th {
@@ -53,13 +53,13 @@ const printStyles = `
       justify-content: space-between;
     }
     .invoice-outline {
-      border-color: #0b1324;
+      border-color: #003153;
       border-radius: 0;
     }
     .invoice-table,
     .invoice-table th,
     .invoice-table td {
-      border-color: #0b1324;
+      border-color: #003153;
     }
     .invoice-table tfoot td {
       background: transparent;
@@ -128,7 +128,7 @@ const InvoicePreview = ({ data, onEdit }) => {
           </div>
 
           <div>
-            <p className="text-5xl font-black tracking-tight text-gray-900">
+            <p className="text-5xl font-black tracking-tight text-blue-900">
               {formData.industryName || "GANGULY INDUSTRIES"}
             </p>
             <p className="mt-1 text-lg text-black">
@@ -156,10 +156,10 @@ const InvoicePreview = ({ data, onEdit }) => {
           {/* Parties */}
           <div
             style={{ display: "flex", gap: "2rem" }}
-            className="text-sm border-y border-gray-900 pt-4 pb-4 px-5 -mx-5 print:px-6 print:-mx-6"
+            className="text-sm border-y border-blue-900 pt-4 pb-4 px-5 -mx-5 print:px-6 print:-mx-6"
           >
             <div style={{ flex: 1 }}>
-              <p className="font-semibold text-gray-900">Billed to:</p>
+              <p className="font-semibold text-[#003153]">Billed to:</p>
               <p className="mt-1 text-gray-800">
                 {formData.buyerName || "M/S INTERNATIONAL COMBUSTION (INDIA) LTD."}
               </p>
@@ -177,13 +177,13 @@ const InvoicePreview = ({ data, onEdit }) => {
             <table className="invoice-table text-sm">
               <thead>
                 <tr className="bg-gray-100 text-gray-600 uppercase text-xs tracking-wide">
-                  <th className="text-left px-4 py-3">
+                  <th className="text-left px-4 py-3 text-blue-900">
                     Description of Product
                   </th>
-                  <th className="text-center px-4 py-3">Quantity</th>
-                  <th className="text-center px-4 py-3">HSN/SAC</th>
-                  <th className="text-right px-4 py-3">Price</th>
-                  <th className="text-right px-4 py-3">Amount</th>
+                  <th className="text-center px-4 py-3 text-blue-900">Quantity</th>
+                  <th className="text-center px-4 py-3 text-blue-900">HSN/SAC</th>
+                  <th className="text-right px-4 py-3 text-blue-900">Price</th>
+                  <th className="text-right px-4 py-3 text-blue-900">Amount</th>
                 </tr>
               </thead>
               <tbody className="text-gray-800">
