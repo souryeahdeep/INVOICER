@@ -76,7 +76,7 @@ export default function InvoicePreview({ data, onEdit }) {
 
           {/* Seller Info */}
           <div className="border-b-2 border-black p-3">
-            <h2 className="text-2xl font-bold text-blue-800 mb-2">{formData.industryName || 'GANGULY INDUSTRIES'}</h2>
+            <h2 className="text-2xl font-bold text-blue-900 mb-2">{formData.industryName || 'GANGULY INDUSTRIES'}</h2>
             <div className="text-sm space-y-1">
               <div>{formData.companyAddress || '24 GT ROAD, ANGUS, HOOGHLY - 712221'}</div>
               <div>GSTIN: {formData.gstinNumber || '19AGJPG6443J2Z2'}</div>
@@ -101,11 +101,11 @@ export default function InvoicePreview({ data, onEdit }) {
             <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="bg-gray-200 border-b-2 border-black">
-                  <th className="border-r-2 border-black p-2 text-left font-semibold text-blue-700">DESCRIPTION OF PRODUCT</th>
-                  <th className="border-r-2 border-black p-2 text-center font-semibold w-20">QUANTITY</th>
-                  <th className="border-r-2 border-black p-2 text-center font-semibold w-24">HSN/SAC</th>
-                  <th className="border-r-2 border-black p-2 text-center font-semibold w-24">PRICE</th>
-                  <th className="p-2 text-center font-semibold w-28">AMOUNT</th>
+                  <th className="border-r-2 border-black p-2 text-left font-semibold text-blue-900">DESCRIPTION OF PRODUCT</th>
+                  <th className="border-r-2 border-black p-2 text-center font-semibold w-20 text-blue-900">QUANTITY</th>
+                  <th className="border-r-2 border-black p-2 text-center font-semibold w-24 text-blue-900">HSN/SAC</th>
+                  <th className="border-r-2 border-black p-2 text-center font-semibold w-24 text-blue-900">PRICE</th>
+                  <th className="p-2 text-center font-semibold w-28 text-blue-900">AMOUNT</th>
                 </tr>
               </thead>
               <tbody>
@@ -126,7 +126,7 @@ export default function InvoicePreview({ data, onEdit }) {
               <table className="w-full border-collapse text-sm">
                 <tbody>
                   <tr className="border-b border-black bg-gray-100">
-                    <td className="border-r-2 border-black px-2 pl-37 text-right font-semibold">Total</td>
+                    <td className="border-r-2 border-black px-2 pl-70 text-right font-semibold">Total</td>
                     <td className="p-2 text-right font-bold">{formatCurrency(totals.subtotal)}</td>
                   </tr>
                   <tr className="border-b border-black">
