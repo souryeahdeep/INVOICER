@@ -1,268 +1,170 @@
-const printStyles = `
-  .invoice-outline {
-    border: 3px solid #003153;
-    border-radius: 1rem;
-  }
+import React from 'react';
 
-  .invoice-table {
-    width: 100%;
-    border: 2px solid #003153;
-    border-collapse: collapse;
-  }
-
-  .invoice-table th,
-  .invoice-table td {
-    border: 1.5px solid #003153;
-  }
-
-  .invoice-table th {
-    background: #e2e8f0;
-  }
-
-  .invoice-table tfoot td {
-    background: #f8fafc;
-  }
-
-  .invoice-table tfoot tr:last-child td {
-    font-size: 1rem;
-    font-weight: 700;
-  }
-
-  @media print {
-    @page {
-      size: A4 portrait;
-      margin: 8mm;
-    }
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      background: white !important;
-      height: 100%;
-      width: 100%;
-    }
-    .print-wrapper {
-      min-height: 100vh !important;
-      height: 100%;
-      margin: 0;
-      padding: 1rem;
-      page-break-after: avoid;
-      page-break-inside: avoid;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .invoice-outline {
-      border-color: #003153;
-      border-radius: 0;
-    }
-    .invoice-table,
-    .invoice-table th,
-    .invoice-table td {
-      border-color: #003153;
-    }
-    .invoice-table tfoot td {
-      background: transparent;
-    }
-  }
-`;
-
-const InvoicePreview = ({ data, onEdit }) => {
+export default function InvoicePreview({ data, onEdit }) {
   const { formData, products, totals } = data;
 
-  const handlePrint = () => window.print();
+  const handlePrint = () => {
+    window.print();
+  };
 
   const formatCurrency = (value) => `₹${Number(value || 0).toFixed(2)}`;
-  const summaryRows = [
-    { label: "Total", value: totals.subtotal },
-    { label: `CGST @ ${formData.cgstRate || 0}%`, value: totals.cgst },
-    { label: `SGST @ ${formData.sgstRate || 0}%`, value: totals.sgst },
-    { label: "Round Off", value: totals.roundOff },
-    { label: "Grand Total", value: totals.grandTotal, highlight: true },
-  ];
 
   return (
     <>
-      <style>{printStyles}</style>
-      <div className="print-wrapper min-h-screen bg-[#f3f4f6] py-10 px-4 print:bg-white print:py-0 print:px-0 print:min-h-auto">
-        <div className="max-w-4xl mx-auto mb-6 flex flex-wrap gap-3 justify-between print:hidden">
-          <button
-            type="button"
-            onClick={onEdit}
-            className="inline-flex items-center gap-2 bg-white text-gray-900 border border-gray-300 px-4 py-2 rounded-lg shadow-sm hover:bg-gray-50 transition"
-          >
-            <span className="text-lg">←</span>
-            Edit Invoice
-          </button>
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow hover:bg-black transition"
-          >
-            Print / Download
-          </button>
-        </div>
+      <style>{`
+        @media print {
+          body {
+            margin: 0;
+            padding: 0;
+          }
+          .no-print {
+            display: none !important;
+          }
+          .invoice-container {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 20mm 15mm;
+            box-sizing: border-box;
+          }
+          @page {
+            size: A4;
+            margin: 0;
+          }
+        }
+        
+        @media screen {
+          .invoice-container {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 20px auto;
+            padding: 20mm 15mm;
+            box-sizing: border-box;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          }
+        }
+      `}</style>
 
-        <div className="relative max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden print:shadow-none print:rounded-none print:max-w-full invoice-outline">
-          <div className="relative z-10 px-0 pb-1 pt-4 space-y-8 text-gray-900 print:px-6 print:pb-2 print:pt-1 print:space-y-5">
-            {/* Header */}
-            <div className="flex justify-between items-start text-sm font-semibold tracking-wide text-gray-500">
-              <div>
-                <p className="text-lg font-bold text-gray-900">TAX INVOICE</p>
-              </div>
-              <div className="text-right">
-                <p className="uppercase text-xs mb-1">No.</p>
-                <p className="text-base font-bold text-gray-900">
-                  {formData.billNo || "000001"}
-                </p>
-              </div>
+      <div className="no-print fixed top-4 right-4 z-50 flex gap-2">
+        <button
+          onClick={onEdit}
+          className="flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors shadow-lg"
+        >
+          ← Edit Invoice
+        </button>
+        <button
+          onClick={handlePrint}
+          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+        >
+          Print Invoice
+        </button>
+      </div>
+
+      <div className="invoice-container">
+        <div className="border-2 border-black h-full flex flex-col">
+          {/* Header */}
+          <div className="border-b-2 border-black p-3 flex justify-between items-start">
+            <div>
+              <h1 className="text-xl font-bold mb-2">TAX INVOICE</h1>
             </div>
-
-            {/* Company Info */}
-            <div className="company-info max-w-xl space-y-1 text-sm leading-snug print:-mt-3 print:space-y-0.5 print:text-[13px]">
-              <p className="text-3xl font-black tracking-tight text-blue-900">
-                {formData.industryName || "GANGULY INDUSTRIES"}
-              </p>
-              <p className="text-sm text-black">
-                {formData.companyAddress ||
-                  "24 GT ROAD, ANGUS , HOOGHLY - 712221"}
-              </p>
-              <p className="text-sm text-black">
-                GSTIN: {formData.gstinNumber || "19APGJPG6443J2Z2"}
-              </p>
-              <p className="text-sm text-black">
-                UAN: {formData.uanNumber || "UAN Number"}
-              </p>
-              <p className="text-sm text-gray-900">
-                Mobile No : {formData.mobileNumber || "9830520044"}
-              </p>
-              <p className="text-sm text-gray-600">
-                <span className="font-semibold text-gray-700">Date: </span>
-                <span className=" text-gray-900">
-                  {formData.invoiceDate || new Date().toLocaleDateString()}
-                </span>
-              </p>
+            <div className="text-right">
+              <div className="text-sm">NO.</div>
+              <div className="font-semibold">{formData.billNo || '000001'}</div>
             </div>
+          </div>
 
-            {/* Parties */}
-            <div
-              style={{ display: "flex", gap: "2rem" }}
-              className="text-sm border-y border-blue-900 pt-4 pb-2 px-5 -mx-5 print:px-6 print:-mx-6"
-            >
-              <div style={{ flex: 1 }}>
-                <p className="font-semibold text-[#003153]">Billed to:</p>
-                <p className=" text-gray-800">
-                  {formData.buyerName ||
-                    "M/S INTERNATIONAL COMBUSTION (INDIA) LTD."}
-                </p>
-                <p className="text-gray-500 text-sm">
-                  {formData.buyerAddress || "Buyer address line"}
-                </p>
-                <p className="text-gray-500 text-sm">
-                  GSTIN: {formData.buyerGstin || "Buyer GSTIN"}
-                </p>
-              </div>
+          {/* Seller Info */}
+          <div className="border-b-2 border-black p-3">
+            <h2 className="text-2xl font-bold text-blue-800 mb-2">{formData.industryName || 'GANGULY INDUSTRIES'}</h2>
+            <div className="text-sm space-y-1">
+              <div>{formData.companyAddress || '24 GT ROAD, ANGUS, HOOGHLY - 712221'}</div>
+              <div>GSTIN: {formData.gstinNumber || '19AGJPG6443J2Z2'}</div>
+              <div>UAN: {formData.uanNumber || 'UAN Number'}</div>
+              <div>Mobile No: {formData.mobileNumber || '9830520044'}</div>
+              <div>Date: {formData.invoiceDate || new Date().toLocaleDateString()}</div>
             </div>
+          </div>
 
-            {/* Table */}
-            <div className="w-full">
-              <table className="invoice-table text-sm">
-                <thead>
-                  <tr className="bg-gray-100 text-gray-600 uppercase text-xs tracking-wide">
-                    <th className="text-left px-4 py-3 text-blue-900">
-                      Description of Product
-                    </th>
-                    <th className="text-center px-4 py-3 text-blue-900">
-                      Quantity
-                    </th>
-                    <th className="text-center px-4 py-3 text-blue-900">
-                      HSN/SAC
-                    </th>
-                    <th className="text-right px-4 py-3 text-blue-900">
-                      Price
-                    </th>
-                    <th className="text-right px-4 py-3 text-blue-900">
-                      Amount
-                    </th>
+          {/* Buyer Info */}
+          <div className="border-b-2 border-black p-3">
+            <div className="text-sm">
+              <div className="mb-1">Billed to:</div>
+              <div className="font-semibold">{formData.buyerName || 'Buyer Name'}</div>
+              <div>{formData.buyerAddress || 'Buyer Address'}</div>
+              <div>GSTIN: {formData.buyerGstin || 'Buyer GSTIN'}</div>
+            </div>
+          </div>
+
+          {/* Items Table */}
+          <div className="flex-1 flex flex-col">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-gray-200 border-b-2 border-black">
+                  <th className="border-r-2 border-black p-2 text-left font-semibold text-blue-700">DESCRIPTION OF PRODUCT</th>
+                  <th className="border-r-2 border-black p-2 text-center font-semibold w-20">QUANTITY</th>
+                  <th className="border-r-2 border-black p-2 text-center font-semibold w-24">HSN/SAC</th>
+                  <th className="border-r-2 border-black p-2 text-center font-semibold w-24">PRICE</th>
+                  <th className="p-2 text-center font-semibold w-28">AMOUNT</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product, index) => (
+                  <tr key={product.id} className="border-b border-black">
+                    <td className="border-r-2 border-black p-2">{product.name || 'Product description'}</td>
+                    <td className="border-r-2 border-black p-2 text-center">{product.quantity}</td>
+                    <td className="border-r-2 border-black p-2 text-center">{product.hsnSac || 'HSN/SAC'}</td>
+                    <td className="border-r-2 border-black p-2 text-right">{formatCurrency(product.price)}</td>
+                    <td className="p-2 text-right font-semibold">{formatCurrency(product.quantity * product.price)}</td>
                   </tr>
-                </thead>
-                <tbody className="text-gray-800">
-                  {products.map((product) => (
-                    <tr key={product.id}>
-                      <td className="px-4 py-3">
-                        {product.name || "Item description"}
-                      </td>
-                      <td className="text-center px-4 py-3">
-                        {product.quantity}
-                      </td>
-                      <td className="text-center px-4 py-3">
-                        {product.hsnSac || "HSN/SAC"}
-                      </td>
-                      <td className="text-right px-4 py-3">
-                        {formatCurrency(product.price)}
-                      </td>
-                      <td className="text-right px-4 py-3 font-semibold">
-                        {formatCurrency(product.quantity * product.price)}
-                      </td>
-                    </tr>
-                  ))}
+                ))}
+              </tbody>
+            </table>
+
+            {/* Totals Section */}
+            <div className="mt-auto print:mt-0">
+              <table className="w-full border-collapse text-sm">
+                <tbody>
+                  <tr className="border-b border-black bg-gray-100">
+                    <td className="border-r-2 border-black px-2 pl-37 text-right font-semibold">Total</td>
+                    <td className="p-2 text-right font-bold">{formatCurrency(totals.subtotal)}</td>
+                  </tr>
+                  <tr className="border-b border-black">
+                    <td className="border-r-2 border-black p-2 text-right">CGST @ {formData.cgstRate || 0}%</td>
+                    <td className="p-2 text-right">{formatCurrency(totals.cgst)}</td>
+                  </tr>
+                  <tr className="border-b border-black">
+                    <td className="border-r-2 border-black p-2 text-right">SGST @ {formData.sgstRate || 0}%</td>
+                    <td className="p-2 text-right">{formatCurrency(totals.sgst)}</td>
+                  </tr>
+                  <tr className="border-b border-black">
+                    <td className="border-r-2 border-black p-2 text-right">Round Off</td>
+                    <td className="p-2 text-right">{formatCurrency(totals.roundOff)}</td>
+                  </tr>
+                  <tr className="bg-gray-200">
+                    <td className="border-r-2 border-black p-2 text-right font-bold">Grand Total</td>
+                    <td className="p-2 text-right font-bold text-lg">{formatCurrency(totals.grandTotal)}</td>
+                  </tr>
                 </tbody>
-                <tfoot>
-                  {summaryRows.map((row) => (
-                    <tr key={row.label}>
-                      <td className="px-4 py-2" colSpan={3}></td>
-                      <td
-                        className={`px-4 py-2 text-right font-semibold ${
-                          row.highlight ? "text-base" : "text-sm"
-                        }`}
-                      >
-                        {row.label}
-                      </td>
-                      <td
-                        className={`px-4 py-2 text-right font-semibold ${
-                          row.highlight ? "text-base" : "text-sm"
-                        }`}
-                      >
-                        {formatCurrency(row.value)}
-                      </td>
-                    </tr>
-                  ))}
-                </tfoot>
               </table>
             </div>
 
-            {/* Footer info */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-              }}
-              className="text-sm text-gray-600"
-            >
-              <div className="space-y-2">
-                <p>
+            {/* Footer */}
+            <div className="border-t-2 border-black p-3 flex justify-between items-start text-sm">
+              <div className="space-y-1">
+                <div>
                   <span className="font-semibold text-gray-800">Rupees:</span>
-                  <span className="ml-2 text-gray-700">
-                    {formData.rupeesText}
-                  </span>
-                </p>
-
+                  <span className="ml-2 text-gray-700">{formData.rupeesText || totals.amountInWords}</span>
+                </div>
                 {formData.orderNo && (
-                  <p>
-                    <span className="font-semibold text-gray-800">
-                      Order No:
-                    </span>
-                    <span className="ml-2 text-gray-700">
-                      {formData.orderNo}
-                    </span>
-                  </p>
+                  <div>
+                    <span className="font-semibold text-gray-800">Order No:</span>
+                    <span className="ml-2 text-gray-700">{formData.orderNo}</span>
+                  </div>
                 )}
               </div>
               <div className="text-right">
-                <p className="font-semibold text-gray-900">
-                  For {formData.industryName || "Ganguly Industries"}
-                </p>
+                <p className="font-semibold text-gray-900">For {formData.industryName || 'Ganguly Industries'}</p>
               </div>
             </div>
           </div>
@@ -270,6 +172,4 @@ const InvoicePreview = ({ data, onEdit }) => {
       </div>
     </>
   );
-};
-
-export default InvoicePreview;
+}
